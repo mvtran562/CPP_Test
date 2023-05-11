@@ -1,0 +1,142 @@
+// Name: Matthew Tran
+// Date: 4/6/2023
+
+#include <stdio.h>   // fprintf(), fread(), fwrite(), fopen(), fclose()
+#include <stdlib.h>  // malloc(), free()
+#include <iostream> 
+#include <string>
+#include <ctype.h>
+#include <algorithm>
+#include <fstream>
+#include <cstring>
+#include <cctype>
+#include <iomanip>
+using namespace std;
+
+// Program1 count the input characters
+// The user may input any
+//combination of alphanumeric and non-alphanumeric characters.
+//The  program should count each category and tell the user how many of each they entered
+void countChars()
+{
+    string str;
+    cout << "Please type something!: ";
+    getline(cin,str);
+
+    int len  = str.length();
+    int i;
+    int alphCnt = 0;
+    int nonAlphCnt = 0;
+    for(i=0; i<len;i++) 
+    {
+        if(str[i] != ' ')
+            {
+            if(isalnum(str[i])){ // checks if char is in the alphabet
+                alphCnt++; // increments alphabet count
+            }else{
+                nonAlphCnt++;// increments nonalphabet count
+            }
+        }
+    }
+
+    cout << str << " has " << alphCnt << " alphanumeric characters and "<< nonAlphCnt <<" nonalphanumeric characters." << '\n';
+}
+/*
+Program 2: string of numbers and its reverse
+In this program I ask the user to enter a string 10 numbers with no space in
+between. It will print the numbers and it reverse according to the example
+*/
+void strRev()
+{
+    string str;
+    string revStr;
+    cout << "Please type a string of 10 digits (0 to 9) with no space: ";
+    getline(cin,str);
+
+    int len = str.length();
+    // creates the reversed string
+    for(int i = len-1; i>=0;i--)
+    {
+        revStr = revStr + str[i];
+    }
+    // prints out
+    for(int i = 0; i<5;i++)
+    {
+        
+        cout<<string(2*i, ' ')<<str<<string(8, ' ')<<revStr<<"\n";
+    }
+    
+}
+
+/*
+Program 3:
+In this program, your program reads a text file and output erases all non-alphabetical
+characters and for all words larger than 10 characters, converts them to uppercase and
+prints on the screen
+*/
+void program3(char * str)
+{
+    fstream fp(str);
+    string word;
+	if(fp.is_open())
+    {
+        while(fp >> word){ //reads word by word
+            int wordLen = word.length();
+            int i;
+            // checks the chars in the word. Erases the char if it is not in alphabet
+            for(i=0;i<wordLen;i++)
+            {
+                if(! (isalpha(word[i]) )){
+                    word.erase(word.begin()+i);
+                    wordLen--;
+                   
+                }
+            }
+            // checks if the word is 10 or larger chars and uppercases it
+            if(word.length() >=10)
+            {
+                transform(word.begin(),word.end(),word.begin(), ::toupper);
+                cout <<'\n'<<word<<'\n';
+            }
+        }
+        fp.close();
+   }
+    
+}   
+
+/*
+Program 4
+A function that ask the user to think about a number between 1 and 20. Use
+successive guesses to find that number.
+*/
+void program4()
+{
+    string input;
+    int answer;
+    // starts the game
+    cout << "Think of a number between 1 and 20. Press enter when you are ready.";
+    // user inputs the number
+    getline(cin,input);
+    string status = "N";
+    int currGuess;
+    int steps = 0;
+    // Game will continue until user answers Y
+    while(status != "Y")
+    {
+        currGuess = 1 + (rand() %20);
+        cout << "Is the number "<<currGuess<< ". Y or N?";
+        getline(cin,status);
+        //increment steps
+        steps++;
+    }
+    cout<<"I Found the number in " << steps<< " steps.";
+}
+
+
+int main(int argc, char *argv[]) {
+    countChars();
+    //strRev();
+    //program3(argv[1]);
+    //program4();
+    return 0;
+}
